@@ -68,11 +68,13 @@ public class Memory {
         int x = 0;
 
         switch (opcode) {
+           //Clear display
             case 0x00E0:
                 screen.clear();
                 drawFlag = true;
                 pc += 2;
                 return;
+            // Return from subroutine
             case 0x00EE:
                 pc = stack[sp--];
                 drawFlag = true;
@@ -80,9 +82,11 @@ public class Memory {
                 return;
         }
         switch (opcode & 0xF000) {
+            // Jump to location
             case 0x1000:
                 pc = opcode & 0x0FFF;
                 return;
+            // Call a subroutine
             case 0X2000:
                 stack[++sp] = pc;
 

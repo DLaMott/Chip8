@@ -11,24 +11,19 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
 import java.io.*;
 
 public class Chip8 extends Application {
     private static final int SCREEN_WIDTH = 800;
     private static final int SCREEN_HEIGHT = 450;
-
     private Stage mainStage;
-
     Timeline gameLoop;
-
     private Memory memory;
     private Screen screen;
     private Keyboard keyboard;
 
     private void initialize() {
         mainStage.setTitle("CHIP-8-Emulator");
-
         screen = new Screen();
         keyboard = new Keyboard();
 
@@ -54,7 +49,6 @@ public class Chip8 extends Application {
 
         menuFile.getItems().add(loadRomItem);
         menuFile.getItems().add(exitItem);
-
         menuBar.getMenus().add(menuFile);
 
         // Initial render of the screen.
@@ -65,7 +59,6 @@ public class Chip8 extends Application {
         root.getChildren().add(menuBar);
         root.getChildren().add(screen);
 
-
         Scene mainScene = new Scene(root);
 
         // Handle key presses.
@@ -73,7 +66,6 @@ public class Chip8 extends Application {
 
         // Handle key releases.
         mainScene.setOnKeyReleased(e -> keyboard.setKeyUp(e.getCode()));
-
 
         // Set up the main window for show.
         mainStage.setScene(mainScene);
@@ -120,7 +112,6 @@ public class Chip8 extends Application {
 
         gameLoop.getKeyFrames().add(kf);
         loadProgram("roms/PONG");
-
         mainStage.show();
     }
 
@@ -131,24 +122,20 @@ public class Chip8 extends Application {
      */
     private void loadProgram(String program) {
         gameLoop.stop();
-
         screen.clear();
         memory = new Memory(screen, keyboard);
 
         // Load binary and pass it to memory
         try {
-            File f = new File(program);
 
-            DataInputStream in = new DataInputStream(new BufferedInputStream(new FileInputStream(f)));
+            File file = new File(program);
+            DataInputStream inputStream = new DataInputStream(new BufferedInputStream(new FileInputStream(file)));
+            byte[] fileLength = new byte[(int) file.length()];
+            inputStream.read(fileLength);
 
-            byte[] b = new byte[(int) f.length()];
-            in.read(b);
+            memory.loadProgram(fileLength);
 
-            memory.loadProgram(b);
-
-            in.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            inputStream.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
