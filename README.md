@@ -12,7 +12,7 @@ It was made to allow video games to be more easily
 programmed for these computers
 
 <hr>
-The Chip8 emulator supports additional ROM files as tha application
+The Chip8 emulator supports additional ROM files as the application
 allows for a user menu prompt to load a rom. Upon load users will initially
 be present with the classic game known as PONG. Have fun playing some
 classic retro games!
